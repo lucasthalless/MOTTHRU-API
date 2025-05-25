@@ -7,6 +7,8 @@ namespace MOTTHRU.API.Application.Interfaces
     {
         IEnumerable<MotoEntity> GetAll();
         MotoEntity GetMotoById(int id);
+        IEnumerable<MotoEntity> GetMotosByIdPatio(string idPatio);
+        IEnumerable<MotoEntity> GetMotosByStatus(string status);
         MotoEntity CreateMoto(MotoDto entity);
         MotoEntity UpdateMoto(int id, MotoDto entity);
         MotoEntity DeleteMoto(int id);

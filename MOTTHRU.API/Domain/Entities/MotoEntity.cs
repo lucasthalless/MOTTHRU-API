@@ -12,5 +12,7 @@ namespace MOTTHRU.API.Domain.Entities
         public string placa {  get; set; } = String.Empty;
         public string chassi { get; set; }
         public string num_motor { get; set; }
+        public string id_patio { get; set; }
+        public string status { get; set; }
     }
 }

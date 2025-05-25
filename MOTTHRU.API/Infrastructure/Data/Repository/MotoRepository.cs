@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MOTTHRU.API.Domain.Entities;
 using MOTTHRU.API.Domain.Interfaces;
 using MOTTHRU.API.Infrastructure.Data.AppData;
@@ -29,6 +30,20 @@ namespace MOTTHRU.API.Infrastructure.Data.Repository
                 return moto;
             }
             return null;
+        }
+
+        public IEnumerable<MotoEntity> GetByIdPatio(string idPatio)
+        {
+            return _context.Moto
+                .Where(m => m.id_patio == idPatio)
+                .ToList();
+        }
+
+        public IEnumerable<MotoEntity> GetByStatus(string status)
+        {
+            return _context.Moto
+                .Where(m => EF.Functions.Like(m.status, status)) // ou .Equals(status) se for case-sensitive
+                .ToList();
         }
 
         public MotoEntity Create(MotoEntity moto)

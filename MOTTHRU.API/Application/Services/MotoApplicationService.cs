@@ -5,11 +5,11 @@ using MOTTHRU.API.Domain.Interfaces;
 
 namespace MOTTHRU.API.Application.Services
 {
-    public class MotoApplicationServiceService: IMotoApplicationService
+    public class MotoApplicationService: IMotoApplicationService
     {
         private readonly IMotoRepository _motoRepository;
 
-        public MotoApplicationServiceService(IMotoRepository repository)
+        public MotoApplicationService(IMotoRepository repository)
         {
             _motoRepository = repository;
         }
@@ -23,6 +23,16 @@ namespace MOTTHRU.API.Application.Services
         {
             return _motoRepository.GetById(id);
         }
+        
+        public IEnumerable<MotoEntity> GetMotosByIdPatio(string idPatio)
+        {
+            return _motoRepository.GetByIdPatio(idPatio);
+        }
+
+        public IEnumerable<MotoEntity> GetMotosByStatus(string status)
+        { 
+            return _motoRepository.GetByStatus(status);
+        }
 
         public MotoEntity CreateMoto(MotoDto moto)
         {
@@ -31,6 +41,7 @@ namespace MOTTHRU.API.Application.Services
                 chassi = moto.chassi,
                 num_motor = moto.num_motor,
                 placa = moto.placa,
+                status = moto.status,
             };
             
             return _motoRepository.Create(Moto);
@@ -44,6 +55,7 @@ namespace MOTTHRU.API.Application.Services
                 chassi = moto.chassi,
                 num_motor = moto.num_motor,
                 placa = moto.placa,
+                status = moto.status,
             };
             
             return _motoRepository.Update(Moto);

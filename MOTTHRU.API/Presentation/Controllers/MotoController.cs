@@ -6,7 +6,7 @@ using MOTTHRU.API.Domain.Interfaces;
 
 namespace MOTTHRU.API.Controllers
 {
-    [Route("api/[controller]:")]
+    [Route("api/[controller]")]
     [ApiController]
     public class MotoController : ControllerBase
     {
@@ -41,6 +41,40 @@ namespace MOTTHRU.API.Controllers
                     return NoContent();
 
                 return Ok(moto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
+        [HttpGet("byPatio")]
+        public IActionResult GetByIdPatio([FromQuery] string idPatio)
+        {
+            try
+            {
+                var motos = _motoApplicationService.GetMotosByIdPatio(idPatio);
+                if (motos is null || !motos.Any())
+                    return NoContent();
+
+                return Ok(motos);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
+        [HttpGet("byStatus")]
+        public IActionResult GetByStatus([FromQuery] string status)
+        {
+            try
+            {
+                var motos = _motoApplicationService.GetMotosByStatus(status);
+                if (motos is null || !motos.Any())
+                    return NoContent();
+
+                return Ok(motos);
             }
             catch (Exception ex)
             {
