@@ -49,37 +49,41 @@ MOTTHRU-API/
 ```bash
 git clone https://github.com/lucasthalless/MOTTHRU-API.git
 cd MOTTHRU-API
+```
+
 Executando a Aplicação
 Via .NET CLI
-bash
-Copiar
-Editar
+
+```bash
 dotnet restore
 dotnet build
 dotnet run --project MOTTHRU.API
+```
+
 A API ficará disponível em
-https://localhost:5001
-http://localhost:5000
+https://localhost:5022
+http://localhost:5022
 
 Via Docker
-bash
-Copiar
-Editar
+
+```bash
 docker build -t motthru-api .
 docker run -d -p 5000:80 --name motthru-api motthru-api
 A API ficará disponível em
-http://localhost:5000
+http://localhost:5022
+```
 
 📄 Documentação da API
 Após subir o serviço, abra no navegador:
 
-bash
-Copiar
-Editar
-http://localhost:5000/swagger
+```bash
+http://localhost:5022/swagger
+```
+
 Lá você encontra todos os endpoints e pode testar as chamadas diretamente.
 
 📌 Observações
-Verifique se as portas 5000 e 5001 não estão em uso.
+
+Verifique se a porta 5022 não está em uso.
 
 Ajuste appsettings.json para string de conexão com seu banco de dados.
