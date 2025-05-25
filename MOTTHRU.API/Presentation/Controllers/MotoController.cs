@@ -89,7 +89,7 @@ namespace MOTTHRU.API.Controllers
             {
                 var moto = _motoApplicationService.CreateMoto(entity);
 
-                return Ok(moto);
+                return CreatedAtAction(nameof(GetById), new { id = moto.id }, moto);
             }
             catch (Exception ex)
             {
