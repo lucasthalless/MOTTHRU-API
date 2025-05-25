@@ -24,16 +24,21 @@ API RESTful desenvolvida em .NET 8 para gerenciamento de dados de motocicletas. 
 ```
 
 MOTTHRU-API/
-├── MOTTHRU.API/ ← Projeto Web API
-│ ├── Controllers/ ← Controllers (endpoints)
-│ ├── Application/
-│ │ ├── Dtos/ ← Data Transfer Objects
-│ │ └── Services/ ← Lógica de aplicação
-│ ├── Domain/
-│ │ └── Entities/ ← Entidades
-│ └── Infrastructure/
-│ │ └── Data/ ← DbContext e configurações de EF Core
-└─└── Repositories/ ← Implementação de repositórios
+├── Application/
+│ ├── Dtos/ # Objetos de transferência de dados (DTOs)
+│ ├── Interfaces/ # Interfaces de serviços de aplicação
+│ └── Services/ # Implementações dos serviços de aplicação
+├── Domain/
+│ ├── Entities/ # Entidades de domínio
+│ └── Interfaces/ # Interfaces dos repositórios
+│── Infrastructure/
+│ ├── Data/ # configurações de EF Core
+│ ├── AppData/ # DbContext
+│ └── Repository/ # Implementações dos repositórios
+├── Presentation/
+│ └── Controllers/ # Controllers da API
+├── Models/ # Modelos auxiliares de entrada e saída
+└── Migrations/ # Migrations do Entity Framework Core
 
 ```
 
@@ -83,6 +88,10 @@ http://localhost:5022/swagger
 Lá você encontra todos os endpoints e pode testar as chamadas diretamente.
 
 📌 Observações
+
+A estrutura do projeto está preparada para expansão com base na arquitetura em camadas.
+
+Atualmente, a entidade principal é MotoEntity e os serviços relacionados estão implementados.
 
 Verifique se a porta 5022 não está em uso.
 
