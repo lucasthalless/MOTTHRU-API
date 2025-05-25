@@ -1,6 +1,6 @@
 @MOTTHRU.API_HostAddress = http://localhost:5022
 
-GET {{MOTTHRU.API_HostAddress}}/weatherforecast/
+GET {{MOTTHRU.API_HostAddress}}/api/Moto
 Accept: application/json
 
 ###
