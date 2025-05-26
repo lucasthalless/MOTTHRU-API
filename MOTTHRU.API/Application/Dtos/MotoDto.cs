@@ -15,6 +15,9 @@ namespace MOTTHRU.API.Application.Dtos
         [Required(ErrorMessage = $"Campo {nameof(num_motor)} é obrigatório")]
         public string num_motor { get; set; }
         
+        [Required(ErrorMessage = $"Campo {nameof(id_patio)} é obrigatório")]
+        public string id_patio { get; set; } = string.Empty;
+        
         [Required(ErrorMessage = $"Campo {nameof(status)} é obrigatório")]
         public string status { get; set; } = string.Empty;
     }

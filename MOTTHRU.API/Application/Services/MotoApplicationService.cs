@@ -55,6 +55,7 @@ namespace MOTTHRU.API.Application.Services
                 num_motor = moto.num_motor,
                 placa = moto.placa,
                 status = moto.status,
+                id_patio = moto.id_patio,
             };
 
             return _motoRepository.Create(novaMoto);
@@ -72,6 +73,7 @@ namespace MOTTHRU.API.Application.Services
                 num_motor = moto.num_motor,
                 placa = moto.placa,
                 status = moto.status,
+                id_patio = moto.id_patio,
             };
 
             return _motoRepository.Update(motoAtualizada);
