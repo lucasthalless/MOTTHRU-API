@@ -5,7 +5,7 @@ using MOTTHRU.API.Infrastructure.Data.AppData;
 
 namespace MOTTHRU.API.Infrastructure.Data.Repository
 {
-    public class MotoRepository: IMotoRepository
+    public class MotoRepository : IMotoRepository
     {
         private readonly ApplicationContext _context;
 
@@ -13,23 +13,16 @@ namespace MOTTHRU.API.Infrastructure.Data.Repository
         {
             _context = context;
         }
+
         public IEnumerable<MotoEntity> GetAll()
         {
-            var motos =  _context.Moto.ToList();
-            if (motos.Any())
-                return motos;
-            return null;
+            var motos = _context.Moto.ToList();
+            return motos;
         }
 
         public MotoEntity GetById(int id)
         {
-            var moto =   _context.Moto.Find(id);
-
-            if (moto is not null)
-            {
-                return moto;
-            }
-            return null;
+            return _context.Moto.Find(id);
         }
 
         public IEnumerable<MotoEntity> GetByIdPatio(string idPatio)
@@ -48,64 +41,46 @@ namespace MOTTHRU.API.Infrastructure.Data.Repository
 
         public MotoEntity Create(MotoEntity moto)
         {
-            try
-            {
-                _context.Add(moto);
-                _context.SaveChanges();
-                
-                return moto;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Não foi possível salvar a moto.");
-            }
+            if (moto is null)
+                throw new ArgumentNullException(nameof(moto));
+
+            _context.Add(moto);
+            _context.SaveChanges();
+
+            return moto;
         }
 
         public MotoEntity Update(MotoEntity item)
         {
-            try
-            {
-                var moto = _context.Moto.Find(item.id);
+            if (item is null)
+                throw new ArgumentNullException(nameof(item));
 
-                if (moto is not null)
-                {
-                    moto.chassi = item.chassi;
-                    moto.num_motor = item.num_motor;
-                    moto.placa = item.placa;
-                    
-                    _context.Update(moto);
-                    _context.SaveChanges();
-                    return moto;
-                }
+            var moto = _context.Moto.Find(item.id);
 
-                throw new Exception("Não foi possível localizar a moto.");
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
+            if (moto is null)
+                throw new InvalidOperationException("Moto não encontrada para atualização.");
+
+            moto.chassi = item.chassi;
+            moto.num_motor = item.num_motor;
+            moto.placa = item.placa;
+
+            _context.Update(moto);
+            _context.SaveChanges();
+
+            return moto;
         }
 
         public MotoEntity Delete(int id)
         {
-            try
-            {
-                var moto = _context.Moto.Find(id);
+            var moto = _context.Moto.Find(id);
 
-                if (moto is not null)
-                {
-                    _context.Remove(moto);
-                    _context.SaveChanges();
-                    
-                    return moto;
-                }
-                
-                throw new Exception("Não foi possível localizar a moto.");
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
+            if (moto is null)
+                throw new InvalidOperationException("Moto não encontrada para exclusão.");
+
+            _context.Remove(moto);
+            _context.SaveChanges();
+
+            return moto;
         }
     }
 }
