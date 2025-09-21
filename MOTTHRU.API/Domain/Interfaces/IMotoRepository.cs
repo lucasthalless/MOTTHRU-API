@@ -4,12 +4,16 @@ namespace MOTTHRU.API.Domain.Interfaces
 {
     public interface IMotoRepository
     {
-        IEnumerable<MotoEntity> GetAll();
-        MotoEntity GetById(int id);
-        IEnumerable<MotoEntity> GetByIdPatio(string idPatio);
-        IEnumerable<MotoEntity> GetByStatus(string status);
-        MotoEntity Create(MotoEntity item);
-        MotoEntity Update(MotoEntity item);
-        MotoEntity Delete(int id);
+        Task<PageResultModel<IEnumerable<MotoEntity>>>
+            ObterTodosAsync(int Deslocamento = 0, int RegistrosRetornado = 3);
+
+        Task<MotoEntity?> ObterUmAsync(int Id);
+        Task<MotoEntity?> AdicionarAsync(MotoEntity entity);
+        Task<MotoEntity?> EditarAsync(int Id, MotoEntity entity);
+        Task<MotoEntity?> DeletarAsync(int Id);
+
+        Task<IEnumerable<MotoEntity>> ObterPorPatioAsync(int idPatio);
+        // TODO: implementar entidade "Status"
+        // Task<IEnumerable<MotoEntity>> ObterPorStatusAsync(string status);
     }
 }

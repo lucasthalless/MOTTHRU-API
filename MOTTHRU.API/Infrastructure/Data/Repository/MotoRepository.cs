@@ -14,73 +14,103 @@ namespace MOTTHRU.API.Infrastructure.Data.Repository
             _context = context;
         }
 
-        public IEnumerable<MotoEntity> GetAll()
+        public async Task<MotoEntity?> AdicionarAsync(MotoEntity entity)
         {
-            var motos = _context.Moto.ToList();
-            return motos;
+            _context.Moto.Add(entity);
+            await _context.SaveChangesAsync();
+
+            return entity;
         }
 
-        public MotoEntity GetById(int id)
+        public async Task<MotoEntity?> DeletarAsync(int id)
         {
-            return _context.Moto.Find(id);
+            var result = await _context.Moto.FindAsync(id);
+
+            if (result is not null)
+            {
+                _context.Remove(result);
+                await _context.SaveChangesAsync();
+
+                return result;
+            }
+
+            return null;
         }
 
-        public IEnumerable<MotoEntity> GetByIdPatio(string idPatio)
+        public async Task<MotoEntity?> EditarAsync(int id, MotoEntity entity)
         {
-            return _context.Moto
-                .Where(m => m.id_patio == idPatio)
-                .ToList();
+            var result = await _context
+                .Moto
+                // .Include(x => x.Modelo)
+                .Include(x => x.Patio)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (result is not null)
+            {
+                result.Placa = entity.Placa;
+                result.Chassi = entity.Chassi;
+                result.NumMotor = entity.NumMotor;
+                // result.ModeloId = entity.ModeloId;
+                result.PatioId = entity.PatioId;
+
+                _context.Update(result);
+                await _context.SaveChangesAsync();
+
+                return result;
+            }
+
+            return null;
         }
 
-        public IEnumerable<MotoEntity> GetByStatus(string status)
+        public async Task<PageResultModel<IEnumerable<MotoEntity>>> ObterTodosAsync(int deslocamento = 0, int registrosRetornados = 10)
         {
-            return _context.Moto
-                .Where(m => EF.Functions.Like(m.status, status)) // ou .Equals(status) se for case-sensitive
-                .ToList();
+            var totalRegistros = await _context.Moto.CountAsync();
+
+            var result = await _context
+                .Moto
+                // .Include(x => x.Modelo)
+                .Include(x => x.Patio)
+                .OrderBy(x => x.Id)
+                .Skip(deslocamento)
+                .Take(registrosRetornados)
+                .ToListAsync();
+
+            return new PageResultModel<IEnumerable<MotoEntity>>
+            {
+                Data = result,
+                Deslocamento = deslocamento,
+                RegistrosRetornado = registrosRetornados,
+                TotalRegistros = totalRegistros
+            };
         }
 
-        public MotoEntity Create(MotoEntity moto)
+        public async Task<MotoEntity?> ObterUmAsync(int id)
         {
-            if (moto is null)
-                throw new ArgumentNullException(nameof(moto));
+            var result = await _context
+                .Moto
+                // .Include(x => x.Modelo)
+                .Include(x => x.Patio)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-            _context.Add(moto);
-            _context.SaveChanges();
-
-            return moto;
+            return result;
         }
 
-        public MotoEntity Update(MotoEntity item)
+        public async Task<IEnumerable<MotoEntity>> ObterPorPatioAsync(int patioId)
         {
-            if (item is null)
-                throw new ArgumentNullException(nameof(item));
-
-            var moto = _context.Moto.Find(item.id);
-
-            if (moto is null)
-                throw new InvalidOperationException("Moto não encontrada para atualização.");
-
-            moto.chassi = item.chassi;
-            moto.num_motor = item.num_motor;
-            moto.placa = item.placa;
-
-            _context.Update(moto);
-            _context.SaveChanges();
-
-            return moto;
+            return await _context.Moto
+                .Where(m => m.PatioId == patioId)
+                // .Include(x => x.Modelo)
+                .Include(x => x.Patio)
+                .ToListAsync();
         }
 
-        public MotoEntity Delete(int id)
-        {
-            var moto = _context.Moto.Find(id);
-
-            if (moto is null)
-                throw new InvalidOperationException("Moto não encontrada para exclusão.");
-
-            _context.Remove(moto);
-            _context.SaveChanges();
-
-            return moto;
-        }
+        // public async Task<IEnumerable<MotoEntity>> ObterPorStatusAsync(string status)
+        // {
+        //     return await _context.Moto
+        //         // .Where(m => m.Status == status)
+        //         // .Include(x => x.Modelo)
+        //         .Include(x => x.Patio)
+        //         .ToListAsync();
+        // }
     }
 }
