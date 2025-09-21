@@ -65,7 +65,7 @@ dotnet run --project MOTTHRU.API
 7. Acesse a documentação Swagger para testar os endpoints:
 
 ```
-http://localhost:5000/swagger
+http://localhost:5022/swagger
 ```
 
 ---
