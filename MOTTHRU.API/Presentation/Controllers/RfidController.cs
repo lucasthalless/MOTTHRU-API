@@ -9,26 +9,26 @@ using Swashbuckle.AspNetCore.Filters;
 
 namespace MOTTHRU.API.Presentation.Controllers
 {
-    [Route("api/moto")]
+    [Route("api/rfid")]
     [ApiController]
-    public class MotoController : ControllerBase
+    public class RfidController : ControllerBase
     {
-        private readonly IMotoUseCase _motoUseCase;
+        private readonly IRfidUseCase _rfidUseCase;
 
-        public MotoController(IMotoUseCase motoUseCase)
+        public RfidController(IRfidUseCase rfidUseCase)
         {
-            _motoUseCase = motoUseCase;
+            _rfidUseCase = rfidUseCase;
         }
 
         [HttpGet]
-        [SwaggerOperation(Summary = "Lista motos", Description = "Retorna a lista completa de motos cadastradas.")]
-        [SwaggerResponse(200, "Lista retornada com sucesso", typeof(IEnumerable<MotoEntity>))]
-        [SwaggerResponseExample(200, typeof(MotoResponseListSample))]
-        [SwaggerResponse(204, "Não possui dados de motos")]
+        [SwaggerOperation(Summary = "Lista RFIDs", Description = "Retorna a lista completa de RFIDs cadastrados.")]
+        [SwaggerResponse(200, "Lista retornada com sucesso", typeof(IEnumerable<RfidEntity>))]
+        [SwaggerResponseExample(200, typeof(RfidResponseListSample))]
+        [SwaggerResponse(204, "Não possui dados de RFIDs")]
         [EnableRateLimiting("rateLimitePolicy")]
         public async Task<IActionResult> Get(int Deslocamento = 0, int RegistrosRetornado = 10)
         {
-            var result = await _motoUseCase.ObterTodasMotosAsync(Deslocamento, RegistrosRetornado);
+            var result = await _rfidUseCase.ObterTodosRfidsAsync(Deslocamento, RegistrosRetornado);
 
             if (!result.IsSuccess) return StatusCode(result.StatusCode, result.Error);
 
@@ -36,13 +36,13 @@ namespace MOTTHRU.API.Presentation.Controllers
         }
 
         [HttpGet("{id}")]
-        [SwaggerOperation(Summary = "Obtém moto por ID", Description = "Retorna a moto correspondente ao ID informado.")]
-        [SwaggerResponse(200, "Moto encontrada", typeof(MotoEntity))]
-        [SwaggerResponseExample(200, typeof(MotoResponseSample))]
-        [SwaggerResponse(404, "Moto não encontrada")]
+        [SwaggerOperation(Summary = "Obtém RFID por ID", Description = "Retorna o RFID correspondente ao ID informado.")]
+        [SwaggerResponse(200, "RFID encontrado", typeof(RfidEntity))]
+        [SwaggerResponseExample(200, typeof(RfidResponseSample))]
+        [SwaggerResponse(404, "RFID não encontrado")]
         public async Task<IActionResult> Get(int id)
         {
-            var result = await _motoUseCase.ObterUmaMotoAsync(id);
+            var result = await _rfidUseCase.ObterUmRfidAsync(id);
 
             if (!result.IsSuccess) return StatusCode(result.StatusCode, result.Error);
 
@@ -50,12 +50,12 @@ namespace MOTTHRU.API.Presentation.Controllers
         }
 
         [HttpPost]
-        [SwaggerRequestExample(typeof(MotoDto), typeof(MotoRequestSample))]
-        [SwaggerResponse(200, "Moto salva com sucesso", typeof(MotoEntity))]
-        [SwaggerResponseExample(200, typeof(MotoResponseSample))]
-        public async Task<IActionResult> Post(MotoDto entity)
+        [SwaggerRequestExample(typeof(RfidDto), typeof(RfidRequestSample))]
+        [SwaggerResponse(200, "RFID salvo com sucesso", typeof(RfidEntity))]
+        [SwaggerResponseExample(200, typeof(RfidResponseSample))]
+        public async Task<IActionResult> Post(RfidDto entity)
         {
-            var result = await _motoUseCase.AdicionarMotoAsync(entity);
+            var result = await _rfidUseCase.AdicionarRfidAsync(entity);
 
             if (!result.IsSuccess) return StatusCode(result.StatusCode, result.Error);
 
@@ -63,9 +63,9 @@ namespace MOTTHRU.API.Presentation.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, MotoDto entity)
+        public async Task<IActionResult> Put(int id, RfidDto entity)
         {
-            var result = await _motoUseCase.EditarMotoAsync(id, entity);
+            var result = await _rfidUseCase.EditarRfidAsync(id, entity);
 
             if (!result.IsSuccess) return StatusCode(result.StatusCode, result.Error);
 
@@ -75,7 +75,7 @@ namespace MOTTHRU.API.Presentation.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _motoUseCase.DeletarMotoAsync(id);
+            var result = await _rfidUseCase.DeletarRfidAsync(id);
 
             if (!result.IsSuccess) return StatusCode(result.StatusCode, result.Error);
 
