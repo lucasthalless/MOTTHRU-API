@@ -9,7 +9,7 @@ using Swashbuckle.AspNetCore.Filters;
 
 namespace MOTTHRU.API.Presentation.Controllers
 {
-    [Route("api/rfid")]
+    [Route("api/v1/rfid")]
     [ApiController]
     public class RfidController : ControllerBase
     {
@@ -21,10 +21,13 @@ namespace MOTTHRU.API.Presentation.Controllers
         }
 
         [HttpGet]
-        [SwaggerOperation(Summary = "Lista RFIDs", Description = "Retorna a lista completa de RFIDs cadastrados.")]
+        [SwaggerOperation(
+            Summary = "Lista RFIDs",
+            Description = "Retorna a lista completa de RFIDs cadastrados com suporte a paginação."
+        )]
         [SwaggerResponse(200, "Lista retornada com sucesso", typeof(IEnumerable<RfidEntity>))]
-        [SwaggerResponseExample(200, typeof(RfidResponseListSample))]
         [SwaggerResponse(204, "Não possui dados de RFIDs")]
+        [SwaggerResponseExample(200, typeof(RfidResponseListSample))]
         [EnableRateLimiting("rateLimitePolicy")]
         public async Task<IActionResult> Get(int Deslocamento = 0, int RegistrosRetornado = 10)
         {
@@ -32,54 +35,132 @@ namespace MOTTHRU.API.Presentation.Controllers
 
             if (!result.IsSuccess) return StatusCode(result.StatusCode, result.Error);
 
-            return StatusCode(result.StatusCode, result.Value);
+            var hateoas = new
+            {
+                data = result.Value?.Data.Select(r => new
+                {
+                    r.Id,
+                    r.Sinal,
+                    links = new
+                    {
+                        self = Url.Action(nameof(Get), "Rfid", new { id = r.Id }, Request.Scheme),
+                        put = Url.Action(nameof(Put), "Rfid", new { id = r.Id }, Request.Scheme),
+                        delete = Url.Action(nameof(Delete), "Rfid", new { id = r.Id }, Request.Scheme),
+                    }
+                }),
+                links = new
+                {
+                    self = Url.Action(nameof(Get), "Rfid", null, Request.Scheme),
+                    create = Url.Action(nameof(Post), "Rfid", null, Request.Scheme),
+                },
+                pagina = new
+                {
+                    result.Value?.Deslocamento,
+                    result.Value?.RegistrosRetornado,
+                    result.Value?.TotalRegistros
+                }
+            };
+
+            return StatusCode(result.StatusCode, hateoas);
         }
 
         [HttpGet("{id}")]
         [SwaggerOperation(Summary = "Obtém RFID por ID", Description = "Retorna o RFID correspondente ao ID informado.")]
         [SwaggerResponse(200, "RFID encontrado", typeof(RfidEntity))]
-        [SwaggerResponseExample(200, typeof(RfidResponseSample))]
         [SwaggerResponse(404, "RFID não encontrado")]
+        [SwaggerResponseExample(200, typeof(RfidResponseSample))]
         public async Task<IActionResult> Get(int id)
         {
             var result = await _rfidUseCase.ObterUmRfidAsync(id);
 
             if (!result.IsSuccess) return StatusCode(result.StatusCode, result.Error);
 
-            return StatusCode(result.StatusCode, result.Value);
+            var hateoas = new
+            {
+                data = result.Value,
+                links = new
+                {
+                    self = Url.Action(nameof(Get), "Rfid", new { id }),
+                    getAll = Url.Action(nameof(Get), "Rfid", null),
+                    put = Url.Action(nameof(Put), "Rfid", new { id }),
+                    delete = Url.Action(nameof(Delete), "Rfid", new { id }),
+                }
+            };
+
+            return StatusCode(result.StatusCode, hateoas);
         }
 
         [HttpPost]
+        [SwaggerOperation(Summary = "Adiciona RFID", Description = "Adiciona um novo RFID ao sistema.")]
         [SwaggerRequestExample(typeof(RfidDto), typeof(RfidRequestSample))]
-        [SwaggerResponse(200, "RFID salvo com sucesso", typeof(RfidEntity))]
-        [SwaggerResponseExample(200, typeof(RfidResponseSample))]
+        [SwaggerResponse(201, "RFID salvo com sucesso", typeof(RfidEntity))]
+        [SwaggerResponseExample(201, typeof(RfidResponseSample))]
         public async Task<IActionResult> Post(RfidDto entity)
         {
             var result = await _rfidUseCase.AdicionarRfidAsync(entity);
 
             if (!result.IsSuccess) return StatusCode(result.StatusCode, result.Error);
 
-            return StatusCode(result.StatusCode, result.Value);
+            var hateoas = new
+            {
+                data = result.Value,
+                links = new
+                {
+                    self = Url.Action(nameof(Get), "Rfid", new { id = result.Value.Id }),
+                    update = Url.Action(nameof(Put), "Rfid", new { id = result.Value.Id }),
+                    delete = Url.Action(nameof(Delete), "Rfid", new { id = result.Value.Id }),
+                    getAll = Url.Action(nameof(Get), "Rfid", null),
+                }
+            };
+
+            return CreatedAtAction(nameof(Get), new { id = result.Value.Id }, hateoas);
         }
 
         [HttpPut("{id}")]
+        [SwaggerOperation(Summary = "Atualiza RFID", Description = "Edita os dados de um RFID existente pelo ID.")]
+        [SwaggerResponse(200, "RFID atualizado com sucesso", typeof(RfidEntity))]
+        [SwaggerResponse(404, "RFID não encontrado")]
         public async Task<IActionResult> Put(int id, RfidDto entity)
         {
             var result = await _rfidUseCase.EditarRfidAsync(id, entity);
 
             if (!result.IsSuccess) return StatusCode(result.StatusCode, result.Error);
 
-            return StatusCode(result.StatusCode, result.Value);
+            var hateoas = new
+            {
+                data = result.Value,
+                links = new
+                {
+                    self = Url.Action(nameof(Get), "Rfid", new { id }),
+                    getAll = Url.Action(nameof(Get), "Rfid", null),
+                    delete = Url.Action(nameof(Delete), "Rfid", new { id }),
+                }
+            };
+
+            return StatusCode(result.StatusCode, hateoas);
         }
 
         [HttpDelete("{id}")]
+        [SwaggerOperation(Summary = "Remove RFID", Description = "Remove um RFID existente pelo ID.")]
+        [SwaggerResponse(200, "RFID removido com sucesso")]
+        [SwaggerResponse(404, "RFID não encontrado")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _rfidUseCase.DeletarRfidAsync(id);
 
             if (!result.IsSuccess) return StatusCode(result.StatusCode, result.Error);
 
-            return StatusCode(result.StatusCode, result.Value);
+            var hateoas = new
+            {
+                message = "RFID removido com sucesso",
+                links = new
+                {
+                    getAll = Url.Action(nameof(Get), "Rfid", null),
+                    create = Url.Action(nameof(Post), "Rfid", null),
+                }
+            };
+
+            return StatusCode(result.StatusCode, hateoas);
         }
     }
 }
