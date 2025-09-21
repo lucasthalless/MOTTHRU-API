@@ -50,13 +50,19 @@ cd MOTTHRU.API
 dotnet restore
 ```
 
-5. Execute a API:
+5. Execute as migrations e atualize o banco de dados:
+
+```bash
+dotnet ef database update --project MOTTHRU.API.Infrastructure --startup-project MOTTHRU.API
+```
+
+56. Execute a API:
 
 ```bash
 dotnet run --project MOTTHRU.API
 ```
 
-6. Acesse a documentação Swagger para testar os endpoints:
+7. Acesse a documentação Swagger para testar os endpoints:
 
 ```
 http://localhost:5000/swagger
