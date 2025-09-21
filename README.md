@@ -1,98 +1,246 @@
-# MOTTHRU-API
+# MOTTHRU.API
 
-API RESTful desenvolvida em .NET 8 para gerenciamento de dados de motocicletas. Este projeto fornece operações CRUD (Create, Read, Update, Delete) para motos, com campos essenciais como placa, chassi e número do motor.
+## 📋 Integrantes
 
-## 🚀 Tecnologias Utilizadas
+* [Lucas Thalles dos Santos](https://github.com/lucasthalless)
+* [Carolina Estevam Rodgerio](https://github.com/carolrodgerio)
+* [Enrico Andrade D'Amico](https://github.com/enrico-ad)
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
-- ASP.NET Core Web API
-- C#
-- Docker
-- Entity Framework Core
-- Swagger
+---
 
-## ⚙️ Funcionalidades
+## 🏗️ Justificativa da Arquitetura
 
-- **Listar todas as motos**: Recupera todas as motos cadastradas.  
-- **Obter moto por ID**: Recupera detalhes de uma moto específica pelo identificador.  
-- **Cadastrar nova moto**: Adiciona uma nova moto ao sistema.  
-- **Atualizar moto**: Altera dados de uma moto existente.  
-- **Excluir moto**: Remove uma moto do sistema.  
+O projeto foi desenvolvido seguindo **Clean Architecture** e **DDD**, garantindo:
 
-## 📁 Estrutura do Projeto
+* Separação clara entre **Domain**, **Application**, **Infrastructure** e **Presentation**.
+* Facilitação de testes unitários e integração.
+* Código modular, escalável e fácil de manter.
+* Documentação integrada com **Swagger** e exemplos de request/response.
+* Pontos para evolução: modularização em soluções.
 
-```
+---
 
-MOTTHRU-API/
-├── Application/
-│ ├── Dtos/ # Objetos de transferência de dados (DTOs)
-│ ├── Interfaces/ # Interfaces de serviços de aplicação
-│ └── Services/ # Implementações dos serviços de aplicação
-├── Domain/
-│ ├── Entities/ # Entidades de domínio
-│ └── Interfaces/ # Interfaces dos repositórios
-│── Infrastructure/
-│ ├── Data/ # configurações de EF Core
-│ ├── AppData/ # DbContext
-│ └── Repository/ # Implementações dos repositórios
-├── Presentation/
-│ └── Controllers/ # Controllers da API
-├── Models/ # Modelos auxiliares de entrada e saída
-└── Migrations/ # Migrations do Entity Framework Core
+## 🚀 Instruções de Execução
 
-```
-
-## 🛠️ Instalação
-
-### Pré-requisitos
-
-- [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)  
-- [Docker](https://www.docker.com/) (opcional)
-
-### Clonando o Repositório
+1. Clone o repositório:
 
 ```bash
-git clone https://github.com/lucasthalless/MOTTHRU-API.git
-cd MOTTHRU-API
+git clone https://github.com/seu-usuario/MOTTHRU.API.git
 ```
 
-Executando a Aplicação
-Via .NET CLI
+2. Entre na pasta do projeto:
+
+```bash
+cd MOTTHRU.API
+```
+
+3. Configure a **connection string** no `appsettings.json`:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=oracle.fiap.com.br)(PORT=1521))) (CONNECT_DATA=(SERVER=DEDICATED)(SID=ORCL)));User Id=;Password=;"
+  }
+}
+```
+
+4. Restaure os pacotes NuGet:
 
 ```bash
 dotnet restore
-dotnet build
+```
+
+5. Execute a API:
+
+```bash
 dotnet run --project MOTTHRU.API
 ```
 
-A API ficará disponível em
-https://localhost:5022
-http://localhost:5022
+6. Acesse a documentação Swagger para testar os endpoints:
 
-Via Docker
-
-```bash
-docker build -t motthru-api .
-docker run -d -p 5000:80 --name motthru-api motthru-api
-A API ficará disponível em
-http://localhost:5022
+```
+http://localhost:5000/swagger
 ```
 
-📄 Documentação da API
-Após subir o serviço, abra no navegador:
+---
 
-```bash
-http://localhost:5022/swagger
+## 📌 Exemplos de Uso dos Endpoints com HATEOAS
+
+### **MOTO**
+
+* **GET** `/api/moto`
+
+```json
+{
+  "data": [
+    {
+      "id": 100,
+      "placa": "AAA1A11",
+      "chassi": "CHASSI1234567890",
+      "numMotor": "MOTOR123",
+      "patioId": 1,
+      "links": {
+        "self": "/api/moto/100",
+        "put": "/api/moto/100",
+        "delete": "/api/moto/100"
+      }
+    }
+  ],
+  "links": {
+    "self": "/api/moto",
+    "create": "/api/moto"
+  },
+  "pagina": {
+    "Deslocamento": 0,
+    "RegistrosRetornado": 10,
+    "TotalRegistros": 1
+  }
+}
 ```
 
-Lá você encontra todos os endpoints e pode testar as chamadas diretamente.
+* **GET** `/api/moto/{id}`
 
-📌 Observações
+```json
+{
+  "data": {
+    "id": 100,
+    "placa": "AAA1A11",
+    "chassi": "CHASSI1234567890",
+    "numMotor": "MOTOR123",
+    "patioId": 1
+  },
+  "links": {
+    "self": "/api/moto/100",
+    "get": "/api/moto",
+    "put": "/api/moto/100",
+    "delete": "/api/moto/100"
+  }
+}
+```
 
-A estrutura do projeto está preparada para expansão com base na arquitetura em camadas.
+* **POST** `/api/moto`
 
-Atualmente, a entidade principal é MotoEntity e os serviços relacionados estão implementados.
+```json
+{
+  "placa": "AAA1A11",
+  "chassi": "CHASSI1234567890",
+  "numMotor": "MOTOR123",
+  "patioId": 1
+}
+```
 
-Verifique se a porta 5022 não está em uso.
+* **PUT** `/api/moto/{id}`
 
-Ajuste appsettings.json para string de conexão com seu banco de dados.
+```json
+{
+  "placa": "AAA1A11",
+  "chassi": "CHASSI1234567890",
+  "numMotor": "MOTOR999",
+  "patioId": 2
+}
+```
+
+* **DELETE** `/api/moto/{id}`
+
+---
+
+### **PATIO**
+
+* **GET** `/api/patio`
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "nomePatio": "Patio Central",
+      "links": {
+        "self": "/api/patio/1",
+        "put": "/api/patio/1",
+        "delete": "/api/patio/1"
+      }
+    }
+  ],
+  "links": {
+    "self": "/api/patio",
+    "create": "/api/patio"
+  }
+}
+```
+
+* **POST** `/api/patio`
+
+```json
+{
+  "nomePatio": "Patio Central"
+}
+```
+
+* **PUT** `/api/patio/{id}`
+
+```json
+{
+  "nomePatio": "Patio Sul"
+}
+```
+
+* **DELETE** `/api/patio/{id}`
+
+---
+
+### **RFID**
+
+* **GET** `/api/rfid`
+
+```json
+{
+  "data": [
+    {
+      "id": 200,
+      "sinal": "ABC123XYZ",
+      "motoId": 100,
+      "links": {
+        "self": "/api/rfid/200",
+        "put": "/api/rfid/200",
+        "delete": "/api/rfid/200"
+      }
+    }
+  ],
+  "links": {
+    "self": "/api/rfid",
+    "create": "/api/rfid"
+  }
+}
+```
+
+* **POST** `/api/rfid`
+
+```json
+{
+  "sinal": "ABC123XYZ",
+  "motoId": 100
+}
+```
+
+* **PUT** `/api/rfid/{id}`
+
+```json
+{
+  "sinal": "XYZ789ABC",
+  "motoId": 100
+}
+```
+
+* **DELETE** `/api/rfid/{id}`
+
+---
+
+## 🧪 Rodando os Testes
+
+Execute todos os testes do projeto com o comando:
+
+```bash
+dotnet test
+```
+
+Isso executará os **unit tests** de UseCases e Repositories.
