@@ -18,6 +18,8 @@ O projeto foi desenvolvido seguindo **Clean Architecture** e **DDD**, garantindo
 * Documentação integrada com **Swagger** e exemplos de request/response.
 * Pontos para evolução: modularização em soluções.
 
+As entidades implementadas foram: Moto, Patio e Rfid. Atualmente, toda moto vai estar relacionada com um pátio e armazenaremos também a informação de RFID de cada moto. Embora já  existam novas entidades a serem implementadas, com essas informações, será possível iniciar o desenvolvimento da proposta **MOTTHRU**.
+
 ---
 
 ## 🚀 Instruções de Execução
