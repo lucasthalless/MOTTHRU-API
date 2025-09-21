@@ -1,6 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace MOTTHRU.API.Domain.Entities
 {
@@ -35,6 +35,8 @@ namespace MOTTHRU.API.Domain.Entities
         [ForeignKey(nameof(Patio))]
         [Column("patio_id_patio")]
         public int PatioId { get; set; }
+        
+        [JsonIgnore]
         public PatioEntity Patio { get; set; }
     }
 }

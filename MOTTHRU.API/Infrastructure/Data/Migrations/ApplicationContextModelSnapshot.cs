@@ -55,7 +55,7 @@ namespace MOTTHRU.API.Migrations
 
                     b.HasIndex("PatioId");
 
-                    b.ToTable("moto");
+                    b.ToTable("moto", (string)null);
                 });
 
             modelBuilder.Entity("MOTTHRU.API.Domain.Entities.PatioEntity", b =>
@@ -75,7 +75,7 @@ namespace MOTTHRU.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("patio");
+                    b.ToTable("patio", (string)null);
                 });
 
             modelBuilder.Entity("MOTTHRU.API.Domain.Entities.RfidEntity", b =>
@@ -101,7 +101,7 @@ namespace MOTTHRU.API.Migrations
 
                     b.HasIndex("MotoId");
 
-                    b.ToTable("rfid");
+                    b.ToTable("rfid", (string)null);
                 });
 
             modelBuilder.Entity("MOTTHRU.API.Domain.Entities.MotoEntity", b =>
