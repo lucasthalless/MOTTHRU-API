@@ -12,10 +12,10 @@ using MOTTHRU.API.Application.UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Oracle DB Connection
+// Postgres DB Connection
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
-    options.UseOracle(builder.Configuration.GetConnectionString("Oracle"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"));
 });
 
 // Repositórios (injeção de dependências)
