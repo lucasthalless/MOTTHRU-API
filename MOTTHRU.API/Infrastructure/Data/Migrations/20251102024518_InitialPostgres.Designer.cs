@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Oracle.EntityFrameworkCore.Metadata;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MOTTHRU.API.Infrastructure.Data.Migrations
+namespace MOTTHRU.API.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20250921214856_add-patio-and-rfid-tables-and-update-moto-table")]
-    partial class addpatioandrfidtablesandupdatemototable
+    [Migration("20251102024518_InitialPostgres")]
+    partial class InitialPostgres
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,38 +20,38 @@ namespace MOTTHRU.API.Infrastructure.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.5")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            OracleModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("MOTTHRU.API.Domain.Entities.MotoEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("integer")
                         .HasColumnName("id_moto");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Chassi")
                         .IsRequired()
                         .HasMaxLength(17)
-                        .HasColumnType("NVARCHAR2(17)")
+                        .HasColumnType("character varying(17)")
                         .HasColumnName("chassi");
 
                     b.Property<string>("NumMotor")
                         .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR2(20)")
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("num_motor");
 
                     b.Property<int>("PatioId")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("integer")
                         .HasColumnName("patio_id_patio");
 
                     b.Property<string>("Placa")
                         .IsRequired()
                         .HasMaxLength(7)
-                        .HasColumnType("NVARCHAR2(7)")
+                        .HasColumnType("character varying(7)")
                         .HasColumnName("placa");
 
                     b.HasKey("Id");
@@ -65,15 +65,15 @@ namespace MOTTHRU.API.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("integer")
                         .HasColumnName("id_patio");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("NomePatio")
                         .IsRequired()
                         .HasMaxLength(60)
-                        .HasColumnType("NVARCHAR2(60)")
+                        .HasColumnType("character varying(60)")
                         .HasColumnName("nome_patio");
 
                     b.HasKey("Id");
@@ -85,19 +85,19 @@ namespace MOTTHRU.API.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("integer")
                         .HasColumnName("id_rfid");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("MotoId")
-                        .HasColumnType("NUMBER(10)")
+                        .HasColumnType("integer")
                         .HasColumnName("moto_id_moto");
 
                     b.Property<string>("Sinal")
                         .IsRequired()
                         .HasMaxLength(15)
-                        .HasColumnType("NVARCHAR2(15)")
+                        .HasColumnType("character varying(15)")
                         .HasColumnName("sinal");
 
                     b.HasKey("Id");
