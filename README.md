@@ -41,30 +41,36 @@ cd MOTTHRU.API
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=oracle.fiap.com.br)(PORT=1521))) (CONNECT_DATA=(SERVER=DEDICATED)(SID=ORCL)));User Id=;Password=;"
+    "Postgres": "Host=localhost;Port=5433;Database=motthru_postgres;Username=admin;Password=secret"
   }
 }
 ```
 
-4. Restaure os pacotes NuGet:
+4. Rode o Docker compose para executar o banco Postgres:
+
+```bash
+docker-compose up
+```
+
+5. Restaure os pacotes NuGet:
 
 ```bash
 dotnet restore
 ```
 
-5. Execute as migrations e atualize o banco de dados:
+6. Execute as migrations e atualize o banco de dados:
 
 ```bash
-dotnet ef database update --project MOTTHRU.API.Infrastructure --startup-project MOTTHRU.API
+dotnet ef database update --project MOTTHRU.API --startup-project MOTTHRU.API
 ```
 
-56. Execute a API:
+7. Execute a API:
 
 ```bash
 dotnet run --project MOTTHRU.API
 ```
 
-7. Acesse a documentação Swagger para testar os endpoints:
+8. Acesse a documentação Swagger para testar os endpoints:
 
 ```
 http://localhost:5022/swagger
