@@ -36,7 +36,13 @@ git clone https://github.com/seu-usuario/MOTTHRU.API.git
 cd MOTTHRU.API
 ```
 
-3. Configure a **connection string** no `appsettings.json`:
+3. Rode o Docker compose para executar o banco Postgres:
+
+```bash
+docker-compose up
+```
+
+Caso esteja usando outro banco, configure a **connection string** no `appsettings.json` conforme necessário:
 
 ```json
 {
@@ -46,31 +52,25 @@ cd MOTTHRU.API
 }
 ```
 
-4. Rode o Docker compose para executar o banco Postgres:
-
-```bash
-docker-compose up
-```
-
-5. Restaure os pacotes NuGet:
+4. Restaure os pacotes NuGet:
 
 ```bash
 dotnet restore
 ```
 
-6. Execute as migrations e atualize o banco de dados:
+5. Execute as migrations e atualize o banco de dados:
 
 ```bash
 dotnet ef database update --project MOTTHRU.API --startup-project MOTTHRU.API
 ```
 
-7. Execute a API:
+6. Execute a API:
 
 ```bash
 dotnet run --project MOTTHRU.API
 ```
 
-8. Acesse a documentação Swagger para testar os endpoints:
+7. Acesse a documentação Swagger para testar os endpoints:
 
 ```
 http://localhost:5022/swagger
