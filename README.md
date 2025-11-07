@@ -27,7 +27,7 @@ As entidades implementadas foram: Moto, Patio e Rfid. Atualmente, toda moto vai 
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/MOTTHRU.API.git
+git clone https://github.com/lucasthalless/MOTTHRU-API.git
 ```
 
 2. Entre na pasta do projeto:
