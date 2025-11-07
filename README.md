@@ -1,4 +1,4 @@
-# MOTTHRU.API
+# MOTTHRU API
 
 ## 📋 Integrantes
 
