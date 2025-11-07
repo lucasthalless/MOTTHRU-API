@@ -44,6 +44,8 @@ namespace MOTTHRU.API.Presentation.Controllers
                     m.Placa,
                     // m.Status,
                     Patio = m.Patio?.NomePatio ?? string.Empty,
+                    m.Chassi,
+                    m.NumMotor,
                     // Rfid = m.Rfid?.Codigo ?? string.Empty,
                     links = new
                     {
