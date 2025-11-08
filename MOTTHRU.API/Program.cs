@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,8 @@ using MOTTHRU.API.Infrastructure.Data.AppData;
 using MOTTHRU.API.Infrastructure.Data.Repository;
 using Swashbuckle.AspNetCore.Filters;
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using MOTTHRU.API.Application.Interfaces;
 using MOTTHRU.API.Application.UseCases;
 
@@ -41,8 +44,49 @@ builder.Services.AddSwaggerGen(conf =>
     });
     conf.EnableAnnotations();
     conf.ExampleFilters();
+    
+    var securitySchema = new OpenApiSecurityScheme
+    {
+        Description = "Using the Authorization header with the Bearer scheme.",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = "Bearer"
+        }
+    };
+    conf.AddSecurityDefinition("Bearer", securitySchema);
+
+    conf.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { securitySchema, new[] { "Bearer" } }
+    });
+    
 });
 builder.Services.AddSwaggerExamplesFromAssemblyOf<Program>();
+
+
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Secretkey"]!.ToString());
+
+builder.Services.AddAuthentication(options => { 
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; //oAuth
+    })
+    .AddJwtBearer(x => { 
+        x.RequireHttpsMetadata = false; //Em produo  true
+        x.SaveToken = true;
+        x.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false, //oAuth
+            ValidateAudience = false, //oAuth
+        };
+    });
+
 
 // Rate Limiting
 builder.Services.AddRateLimiter(options =>
@@ -97,10 +141,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAll");
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseRateLimiter();
+
 app.UseResponseCompression();
 
 app.MapControllers();
 
 app.Run();
+
+
+public partial class Program { }
