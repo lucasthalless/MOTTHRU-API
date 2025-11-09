@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using MOTTHRU.API.Application.Dtos;
@@ -9,6 +10,7 @@ using Swashbuckle.AspNetCore.Filters;
 
 namespace MOTTHRU.API.Presentation.Controllers
 {
+    [Authorize(Roles = "Operador")]
     [Route("api/v1/rfid")]
     [ApiController]
     public class RfidController : ControllerBase
