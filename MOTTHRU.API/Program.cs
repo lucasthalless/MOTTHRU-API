@@ -44,7 +44,7 @@ builder.Services.AddSwaggerGen(conf =>
     });
     conf.EnableAnnotations();
     conf.ExampleFilters();
-    
+
     var securitySchema = new OpenApiSecurityScheme
     {
         Description = "Using the Authorization header with the Bearer scheme.",
@@ -64,18 +64,19 @@ builder.Services.AddSwaggerGen(conf =>
     {
         { securitySchema, new[] { "Bearer" } }
     });
-    
 });
 builder.Services.AddSwaggerExamplesFromAssemblyOf<Program>();
 
 
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Secretkey"]!.ToString());
 
-builder.Services.AddAuthentication(options => { 
+builder.Services.AddAuthentication(options =>
+    {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; //oAuth
     })
-    .AddJwtBearer(x => { 
+    .AddJwtBearer(x =>
+    {
         x.RequireHttpsMetadata = false; //Em produo  true
         x.SaveToken = true;
         x.TokenValidationParameters = new TokenValidationParameters
@@ -152,4 +153,6 @@ app.MapControllers();
 app.Run();
 
 
-public partial class Program { }
+public partial class Program
+{
+}
