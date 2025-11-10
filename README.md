@@ -76,7 +76,7 @@ dotnet run --project MOTTHRU.API
 http://localhost:5022/swagger
 ```
 
-8. Execute todos **Testes** de Entidades, UseCases e Repositories do projeto com o comando:
+8. Execute todos **testes unitários** de Entidades, UseCases, Repositories e **testes de integração simples** do projeto com o comando:
 
 ```bash
 dotnet test

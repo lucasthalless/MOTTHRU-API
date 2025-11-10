@@ -12,6 +12,7 @@
     <ItemGroup>
         <PackageReference Include="AspNetCore.Diagnostics.CachedHealthChecks" Version="1.0.1" />
         <PackageReference Include="coverlet.collector" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.20" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.21" />
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.10" />
