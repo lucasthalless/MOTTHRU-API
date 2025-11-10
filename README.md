@@ -82,6 +82,9 @@ http://localhost:5022/swagger
 dotnet test
 ```
 
+.
+
+> Endpoint utilizando o ML.NET: _/api/v1/rfid/anomaly-check_
 
 ---
 
