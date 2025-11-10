@@ -30,6 +30,8 @@ builder.Services.AddTransient<IMotoUseCase, MotoUseCase>();
 builder.Services.AddTransient<IPatioUseCase, PatioUseCase>();
 builder.Services.AddTransient<IRfidUseCase, RfidUseCase>();
 
+builder.Services.AddScoped<IRfidAnomalyUseCase, DetectRfidAnomalyUseCase>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 

@@ -5,6 +5,7 @@ using MOTTHRU.API.Application.Dtos;
 using MOTTHRU.API.Application.Interfaces;
 using MOTTHRU.API.Doc.Samples;
 using MOTTHRU.API.Domain.Entities;
+using MOTTHRU.API.Domain.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -16,10 +17,12 @@ namespace MOTTHRU.API.Presentation.Controllers
     public class RfidController : ControllerBase
     {
         private readonly IRfidUseCase _rfidUseCase;
+        private readonly IRfidAnomalyUseCase _rfidAnomalyUseCase;
 
-        public RfidController(IRfidUseCase rfidUseCase)
+        public RfidController(IRfidUseCase rfidUseCase, IRfidAnomalyUseCase rfidAnomalyUseCase)
         {
             _rfidUseCase = rfidUseCase;
+            _rfidAnomalyUseCase = rfidAnomalyUseCase;
         }
 
         [HttpGet]
@@ -163,6 +166,22 @@ namespace MOTTHRU.API.Presentation.Controllers
             };
 
             return StatusCode(result.StatusCode, hateoas);
+        }
+        
+        [HttpPost("anomaly-check")]
+        public async Task<IActionResult> CheckAnomaly([FromBody] RfidSignalInput input)
+        {
+            if (input == null)
+                return BadRequest("Entrada inválida.");
+
+            bool isAnomaly = await _rfidAnomalyUseCase.ExecuteAsync(input.Sinal);
+
+            return Ok(new
+            {
+                input.Sinal,
+                Anomalia = isAnomaly,
+                Mensagem = isAnomaly ? "Sinal anômalo detectado!" : "Sinal dentro do padrão."
+            });
         }
     }
 }
