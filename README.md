@@ -76,13 +76,20 @@ dotnet run --project MOTTHRU.API
 http://localhost:5022/swagger
 ```
 
+8. Execute todos **Testes** de Entidades, UseCases e Repositories do projeto com o comando:
+
+```bash
+dotnet test
+```
+
+
 ---
 
 ## 📌 Exemplos de Uso dos Endpoints com HATEOAS
 
 ### **MOTO**
 
-* **GET** `/api/moto`
+* **GET** `/api/v1/moto`
 
 ```json
 {
@@ -94,15 +101,15 @@ http://localhost:5022/swagger
       "numMotor": "MOTOR123",
       "patioId": 1,
       "links": {
-        "self": "/api/moto/100",
-        "put": "/api/moto/100",
-        "delete": "/api/moto/100"
+        "self": "/api/v1/moto/100",
+        "put": "/api/v1/moto/100",
+        "delete": "/api/v1/moto/100"
       }
     }
   ],
   "links": {
-    "self": "/api/moto",
-    "create": "/api/moto"
+    "self": "/api/v1/moto",
+    "create": "/api/v1/moto"
   },
   "pagina": {
     "Deslocamento": 0,
@@ -112,7 +119,7 @@ http://localhost:5022/swagger
 }
 ```
 
-* **GET** `/api/moto/{id}`
+* **GET** `/api/v1/moto/{id}`
 
 ```json
 {
@@ -124,15 +131,15 @@ http://localhost:5022/swagger
     "patioId": 1
   },
   "links": {
-    "self": "/api/moto/100",
-    "get": "/api/moto",
-    "put": "/api/moto/100",
-    "delete": "/api/moto/100"
+    "self": "/api/v1/moto/100",
+    "get": "/api/v1/moto",
+    "put": "/api/v1/moto/100",
+    "delete": "/api/v1/moto/100"
   }
 }
 ```
 
-* **POST** `/api/moto`
+* **POST** `/api/v1/moto`
 
 ```json
 {
@@ -143,7 +150,7 @@ http://localhost:5022/swagger
 }
 ```
 
-* **PUT** `/api/moto/{id}`
+* **PUT** `/api/v1/moto/{id}`
 
 ```json
 {
@@ -154,13 +161,13 @@ http://localhost:5022/swagger
 }
 ```
 
-* **DELETE** `/api/moto/{id}`
+* **DELETE** `/api/v1/moto/{id}`
 
 ---
 
 ### **PATIO**
 
-* **GET** `/api/patio`
+* **GET** `/api/v1/patio`
 
 ```json
 {
@@ -169,20 +176,20 @@ http://localhost:5022/swagger
       "id": 1,
       "nomePatio": "Patio Central",
       "links": {
-        "self": "/api/patio/1",
-        "put": "/api/patio/1",
-        "delete": "/api/patio/1"
+        "self": "/api/v1/patio/1",
+        "put": "/api/v1/patio/1",
+        "delete": "/api/v1/patio/1"
       }
     }
   ],
   "links": {
-    "self": "/api/patio",
-    "create": "/api/patio"
+    "self": "/api/v1/patio",
+    "create": "/api/v1/patio"
   }
 }
 ```
 
-* **POST** `/api/patio`
+* **POST** `/api/v1/patio`
 
 ```json
 {
@@ -190,7 +197,7 @@ http://localhost:5022/swagger
 }
 ```
 
-* **PUT** `/api/patio/{id}`
+* **PUT** `/api/v1/patio/{id}`
 
 ```json
 {
@@ -198,13 +205,13 @@ http://localhost:5022/swagger
 }
 ```
 
-* **DELETE** `/api/patio/{id}`
+* **DELETE** `/api/v1/patio/{id}`
 
 ---
 
 ### **RFID**
 
-* **GET** `/api/rfid`
+* **GET** `/api/v1/rfid`
 
 ```json
 {
@@ -214,20 +221,20 @@ http://localhost:5022/swagger
       "sinal": "ABC123XYZ",
       "motoId": 100,
       "links": {
-        "self": "/api/rfid/200",
-        "put": "/api/rfid/200",
-        "delete": "/api/rfid/200"
+        "self": "/api/v1/rfid/200",
+        "put": "/api/v1/rfid/200",
+        "delete": "/api/v1/rfid/200"
       }
     }
   ],
   "links": {
-    "self": "/api/rfid",
-    "create": "/api/rfid"
+    "self": "/api/v1/rfid",
+    "create": "/api/v1/rfid"
   }
 }
 ```
 
-* **POST** `/api/rfid`
+* **POST** `/api/v1/rfid`
 
 ```json
 {
@@ -236,7 +243,7 @@ http://localhost:5022/swagger
 }
 ```
 
-* **PUT** `/api/rfid/{id}`
+* **PUT** `/api/v1/rfid/{id}`
 
 ```json
 {
@@ -245,16 +252,6 @@ http://localhost:5022/swagger
 }
 ```
 
-* **DELETE** `/api/rfid/{id}`
+* **DELETE** `/api/v1/rfid/{id}`
 
 ---
-
-## 🧪 Rodando os Testes
-
-Execute todos os testes do projeto com o comando:
-
-```bash
-dotnet test
-```
-
-Isso executará os **unit tests** de UseCases e Repositories.
